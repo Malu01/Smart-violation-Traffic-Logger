@@ -83,7 +83,7 @@ def add_violation():
 
         # QR Code Generate pannuvom
         # Inga unga system IP or localhost use pannalam
-        qr_data = f"http://10.247.149.196:5000/status/{new_violation.id}"
+        qr_data = f"http://smart-violation-traffic-logger.onrender.com/status/{new_violation.id}"
         qr_img = qrcode.make(qr_data)
         qr_filename = f"qr_{new_violation.id}.png"
         qr_path = os.path.join('static/qrcodes', qr_filename)
@@ -110,5 +110,7 @@ def update_status(violation_id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
     
