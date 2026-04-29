@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 text-center">
+    <div class="card shadow-lg border-0">
+      <div class="card-body p-5">
+        <h2 class="mb-4">Official Traffic Challan</h2>
+
+        <div class="mb-4">
+          <img
+            src="{{ url_for('static', filename='qrcodes/qr_' + (violation.id|string) + '.png') }}"
+            alt="Challan QR"
+            class="img-fluid border p-2"
+            style="max-width: 200px"
+          />
+          <p class="text-muted mt-2">Scan this to verify status</p>
+        </div>
+
+        <hr />
+
+        <div class="my-4">
+          {% if violation.status == 'Unpaid' %}
+          <h1 class="display-6 text-danger fw-bold">STATUS: UNPAID</h1>
+          <p class="text-muted">
+            Please clear your fine at the nearest traffic station.
+          </p>
+          {% else %}
+          <h1 class="display-6 text-success fw-bold">STATUS: PAID</h1>
+          <p class="text-muted">Thank you for following traffic rules.</p>
+          {% endif %}
+        </div>
+
+        <table class="table table-bordered text-start mt-4">
+          <tr>
+            <th class="bg-light">Vehicle Number</th>
+            <td>{{ violation.vehicle_number }}</td>
+          </tr>
+          <tr>
+            <th class="bg-light">Violation Type</th>
+            <td>{{ violation.violation_type }}</td>
+          </tr>
+          <tr>
+            <th class="bg-light">Location</th>
+            <td>{{ violation.location }}</td>
+          </tr>
+          <tr>
+            <th class="bg-light">Fine Amount</th>
+            <td class="fw-bold">₹{{ violation.fine_amount }}</td>
+          </tr>
+          <tr>
+            <th class="bg-light">Issued Date</th>
+            <td>{{ violation.date.strftime('%d %b %Y, %I:%M %p') }}</td>
+          </tr>
+        </table>
+
+        <div class="mt-4 no-print">
+          <button onclick="window.print()" class="btn btn-secondary">
+            Download / Print Receipt
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
